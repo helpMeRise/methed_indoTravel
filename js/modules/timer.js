@@ -9,21 +9,22 @@ export const timer = () => {
   const heroText = document.querySelector('.hero__text '); 
   const heroTimer = document.querySelector('.hero__timer');
   const timerBlock = document.querySelector('.timer');
-  timerBlock.dataset.deadline = '2022/02/15 19:52';
+  timerBlock.dataset.deadline = '2022/02/09 05:52';
 
   const getTimeRemaining = () => {
     const currentTime = Date.now();
-    const deadline = new Date(timerBlock.dataset.deadline).getTime();
+    const deadline = new Date(timerBlock.dataset.deadline).getTime() + (180 * 60 * 1000);
     const timeRemaining = deadline - currentTime;
 
     const days = Math.floor(timeRemaining / 1000 / 60 / 60 / 24);
     const hours = Math.floor(timeRemaining / 1000 / 60 / 60 % 24);
     const minutes = Math.floor(timeRemaining / 1000 / 60 % 60);
+    const seconds = Math.floor(timeRemaining / 1000 % 60);
 
     if (days <= 0 && hours <=0 && minutes <= 0) {
       return 0;
     } else {
-      return {days, hours, minutes};
+      return {days, hours, minutes, seconds};
     }
   }
 
@@ -31,25 +32,39 @@ export const timer = () => {
     const days = ['день', 'дня', 'дней'];
     const hours = ['час', 'часа', 'часов'];
     const minutes = ['минута', 'минуты', 'минут'];
+    const seconds = ['секунда', 'секунды', 'секунд'];
     const timer = getTimeRemaining();
 
     let day;
     let hour;
     let minute;
+    let second;
 
-    if (timer.days % 10 === 0 || timer.days > 4 && timer.days < 20 || timer.days % 10 > 4) day = days[2];
-    if (timer.days % 10 > 1 && timer.days % 10 < 5) day = days[1];   
-    if (timer.days % 10 === 1) day = days[0];
+    if (timer.days % 10 === 0 || timer.days > 4 && timer.days < 20 || timer.days % 10 > 4) {
+      day = days[2];
+    } else if (timer.days % 10 > 1 && timer.days % 10 < 5) {
+      day = days[1];   
+    } else if (timer.days % 10 === 1) day = days[0];
 
-    if (timer.hours % 10 === 0 || timer.hours > 4 && timer.hours < 20 || timer.hours % 10 > 4) hour = hours[2];
-    if (timer.hours % 10 > 1 && timer.hours % 10 < 5) hour = hours[1];    
-    if (timer.hours % 10 === 1) hour = hours[0];
+    if (timer.hours % 10 === 0 || timer.hours > 4 && timer.hours < 20 || timer.hours % 10 > 4) {
+      hour = hours[2];
+    } else if (timer.hours % 10 > 1 && timer.hours % 10 < 5) {
+      hour = hours[1];
+    } else if (timer.hours % 10 === 1) hour = hours[0];
 
-    if (timer.minutes % 10 === 0 || timer.minutes > 4 && timer.minutes < 20 || timer.minutes % 10 > 4) minute = minutes[2];
-    if (timer.minutes % 10 > 1 && timer.minutes % 10 < 5) minute = minutes[1];
-    if (timer.minutes % 10 === 1) minute = minutes[0];
+    if (timer.minutes % 10 === 0 || timer.minutes > 4 && timer.minutes < 20 || timer.minutes % 10 > 4) {
+      minute = minutes[2];
+    } else if (timer.minutes % 10 > 1 && timer.minutes % 10 < 5) {
+      minute = minutes[1];
+    } else if (timer.minutes % 10 === 1) minute = minutes[0];
 
-    return {day, hour, minute};
+    if (timer.seconds % 10 === 0 || timer.seconds > 4 && timer.seconds < 20 || timer.seconds % 10 > 4) {
+      second = seconds[2];
+    } else if (timer.seconds % 10 > 1 && timer.seconds % 10 < 5) {
+      second = seconds[1];
+    } else if (timer.seconds % 10 === 1) second = seconds[0];
+
+    return {day, hour, minute, second};
   }
 
   const start = () => {
@@ -60,12 +75,22 @@ export const timer = () => {
       heroText.remove();
       heroTimer.remove();
     }
-    timerDays.textContent = timer.days;
-    timerHours.textContent = timer.hours;
-    timerMinutes.textContent = timer.minutes;
-    timerDaysUnits.textContent = units.day;
-    timerHoursUnits.textContent = units.hour;
-    timerMinutesUnits.textContent = units.minute;
+    if (!timer.days) {
+      timer.hours >= 10 ? timerDays.textContent = timer.hours : timerDays.textContent = `0${timer.hours}`;
+      timer.minutes >= 10 ? timerHours.textContent = timer.minutes : timerHours.textContent = `0${timer.minutes}`;
+      timer.seconds >= 10 ? timerMinutes.textContent = timer.seconds : timerMinutes.textContent = `0${timer.seconds}`;
+      timerDaysUnits.textContent = units.hour;
+      timerHoursUnits.textContent = units.minute;
+      timerMinutesUnits.textContent = units.second;
+    } else {
+      timerDays.textContent = timer.days;
+      timer.hours >= 10 ? (timerHours.textContent = timer.hours) : (timerHours.textContent = `0${timer.hours}`);
+      timer.minutes >= 10 ? timerMinutes.textContent = timer.minutes : timerMinutes.textContent = `0${timer.minutes}`;
+      timerDaysUnits.textContent = units.day;
+      timerHoursUnits.textContent = units.hour;
+      timerMinutesUnits.textContent = units.minute;
+    }
+    
 
     const intervalId = setTimeout(start, 1000);
   }
