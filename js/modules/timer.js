@@ -40,24 +40,28 @@ export const timer = () => {
     let minute;
     let second;
 
+    //  В зависимости от дня недели, склоняем слово "день" так как нужно
     if (timer.days % 10 === 0 || timer.days > 4 && timer.days < 20 || timer.days % 10 > 4) {
       day = days[2];
     } else if (timer.days % 10 > 1 && timer.days % 10 < 5) {
       day = days[1];   
     } else if (timer.days % 10 === 1) day = days[0];
 
+    //  В зависимости от текущего часа, склоняем слово "час" так как нужно
     if (timer.hours % 10 === 0 || timer.hours > 4 && timer.hours < 20 || timer.hours % 10 > 4) {
       hour = hours[2];
     } else if (timer.hours % 10 > 1 && timer.hours % 10 < 5) {
       hour = hours[1];
     } else if (timer.hours % 10 === 1) hour = hours[0];
 
+    //  В зависимости от текущей минуты, склоняем слово "минута" так как нужно
     if (timer.minutes % 10 === 0 || timer.minutes > 4 && timer.minutes < 20 || timer.minutes % 10 > 4) {
       minute = minutes[2];
     } else if (timer.minutes % 10 > 1 && timer.minutes % 10 < 5) {
       minute = minutes[1];
     } else if (timer.minutes % 10 === 1) minute = minutes[0];
 
+    //  В зависимости от текущей секунды, склоняем слово "секунда" так как нужно
     if (timer.seconds % 10 === 0 || timer.seconds > 4 && timer.seconds < 20 || timer.seconds % 10 > 4) {
       second = seconds[2];
     } else if (timer.seconds % 10 > 1 && timer.seconds % 10 < 5) {
@@ -71,10 +75,12 @@ export const timer = () => {
     const timer = getTimeRemaining();
     const units = getUnits();
 
+    //  Если наступил дедлайн, то удаляем таймер со страницы
     if (!timer) {
       heroText.remove();
       heroTimer.remove();
     }
+    //  Если до дедлайна меньше 24 суток, то меняет таймер, заменяя дни на часа и добавляя секунды. Если значения меньше 10, то добавляем перед ними 0
     if (!timer.days) {
       timer.hours >= 10 ? timerDays.textContent = timer.hours : timerDays.textContent = `0${timer.hours}`;
       timer.minutes >= 10 ? timerHours.textContent = timer.minutes : timerHours.textContent = `0${timer.minutes}`;
