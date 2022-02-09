@@ -6,14 +6,15 @@ export const timer = () => {
   const timerDaysUnits = document.querySelector('.timer__units_days');
   const timerHoursUnits = document.querySelector('.timer__units_hours');
   const timerMinutesUnits = document.querySelector('.timer__units_minutes');
-  const heroText = document.querySelector('.hero__text '); 
+  const heroText = document.querySelector('.hero__text ');
   const heroTimer = document.querySelector('.hero__timer');
   const timerBlock = document.querySelector('.timer');
   timerBlock.dataset.timerDeadline = '2022/02/10 11:27';
 
   const getTimeRemaining = () => {
     const currentTime = Date.now();
-    const deadline = new Date(timerBlock.dataset.timerDeadline).getTime() + (180 * 60 * 1000);
+    const deadline = new Date(timerBlock.dataset.timerDeadline).getTime() +
+      (180 * 60 * 1000);
     const timeRemaining = deadline - currentTime;
 
     const days = Math.floor(timeRemaining / 1000 / 60 / 60 / 24);
@@ -21,12 +22,12 @@ export const timer = () => {
     const minutes = Math.floor(timeRemaining / 1000 / 60 % 60);
     const seconds = Math.floor(timeRemaining / 1000 % 60);
 
-    if (days <= 0 && hours <=0 && minutes <= 0 && seconds <= 0) {
+    if (days <= 0 && hours <= 0 && minutes <= 0 && seconds <= 0) {
       return 0;
     } else {
       return {days, hours, minutes, seconds};
     }
-  }
+  };
 
   const getUnits = () => {
     const days = ['день', 'дня', 'дней'];
@@ -41,57 +42,67 @@ export const timer = () => {
     let second;
 
     //  В зависимости от дня недели, склоняем слово "день" так как нужно
-    if (timer.days % 10 === 0 || timer.days > 4 && timer.days < 20 || timer.days % 10 > 4) {
+    if (timer.days % 10 === 0 || timer.days > 4 && timer.days < 20 ||
+        timer.days % 10 > 4) {
       day = days[2];
     } else if (timer.days % 10 > 1 && timer.days % 10 < 5) {
-      day = days[1];   
+      day = days[1];
     } else if (timer.days % 10 === 1) day = days[0];
 
     //  В зависимости от текущего часа, склоняем слово "час" так как нужно
-    if (timer.hours % 10 === 0 || timer.hours > 4 && timer.hours < 20 || timer.hours % 10 > 4) {
+    if (timer.hours % 10 === 0 || timer.hours > 4 && timer.hours < 20 ||
+        timer.hours % 10 > 4) {
       hour = hours[2];
     } else if (timer.hours % 10 > 1 && timer.hours % 10 < 5) {
       hour = hours[1];
     } else if (timer.hours % 10 === 1) hour = hours[0];
 
     //  В зависимости от текущей минуты, склоняем слово "минута" так как нужно
-    if (timer.minutes % 10 === 0 || timer.minutes > 4 && timer.minutes < 20 || timer.minutes % 10 > 4) {
+    if (timer.minutes % 10 === 0 || timer.minutes > 4 && timer.minutes < 20 ||
+        timer.minutes % 10 > 4) {
       minute = minutes[2];
     } else if (timer.minutes % 10 > 1 && timer.minutes % 10 < 5) {
       minute = minutes[1];
     } else if (timer.minutes % 10 === 1) minute = minutes[0];
 
     //  В зависимости от текущей секунды, склоняем слово "секунда" так как нужно
-    if (timer.seconds % 10 === 0 || timer.seconds > 4 && timer.seconds < 20 || timer.seconds % 10 > 4) {
+    if (timer.seconds % 10 === 0 || timer.seconds > 4 && timer.seconds < 20 ||
+        timer.seconds % 10 > 4) {
       second = seconds[2];
     } else if (timer.seconds % 10 > 1 && timer.seconds % 10 < 5) {
       second = seconds[1];
     } else if (timer.seconds % 10 === 1) second = seconds[0];
 
     return {day, hour, minute, second};
-  }
+  };
 
   const start = () => {
     const timer = getTimeRemaining();
     const units = getUnits();
 
-    //  Если до дедлайна меньше 24 суток, то меняет таймер, заменяя дни на часа и добавляя секунды. Если значения меньше 10, то добавляем перед ними 0
+    //  Если до дедлайна меньше 24 суток, то меняет таймер,
+    //  заменяя дни на часа и добавляя секунды.
+    //  Если значения меньше 10, то добавляем перед ними 0
     if (!timer.days) {
-      timer.hours >= 10 ? timerDays.textContent = timer.hours : timerDays.textContent = `0${timer.hours}`;
-      timer.minutes >= 10 ? timerHours.textContent = timer.minutes : timerHours.textContent = `0${timer.minutes}`;
-      timer.seconds >= 10 ? timerMinutes.textContent = timer.seconds : timerMinutes.textContent = `0${timer.seconds}`;
+      timer.hours >= 10 ? timerDays.textContent = timer.hours :
+        timerDays.textContent = `0${timer.hours}`;
+      timer.minutes >= 10 ? timerHours.textContent = timer.minutes :
+        timerHours.textContent = `0${timer.minutes}`;
+      timer.seconds >= 10 ? timerMinutes.textContent = timer.seconds :
+        timerMinutes.textContent = `0${timer.seconds}`;
       timerDaysUnits.textContent = units.hour;
       timerHoursUnits.textContent = units.minute;
       timerMinutesUnits.textContent = units.second;
     } else {
       timerDays.textContent = timer.days;
-      timer.hours >= 10 ? (timerHours.textContent = timer.hours) : (timerHours.textContent = `0${timer.hours}`);
-      timer.minutes >= 10 ? timerMinutes.textContent = timer.minutes : timerMinutes.textContent = `0${timer.minutes}`;
+      timer.hours >= 10 ? (timerHours.textContent = timer.hours) :
+        (timerHours.textContent = `0${timer.hours}`);
+      timer.minutes >= 10 ? timerMinutes.textContent = timer.minutes :
+        timerMinutes.textContent = `0${timer.minutes}`;
       timerDaysUnits.textContent = units.day;
       timerHoursUnits.textContent = units.hour;
       timerMinutesUnits.textContent = units.minute;
     }
-    
 
     const intervalId = setTimeout(start, 1000);
 
@@ -101,8 +112,7 @@ export const timer = () => {
       heroTimer.remove();
       clearTimeout(intervalId);
     }
-
-  }
+  };
 
   start();
-}
+};
