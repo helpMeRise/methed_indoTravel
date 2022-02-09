@@ -9,11 +9,11 @@ export const timer = () => {
   const heroText = document.querySelector('.hero__text '); 
   const heroTimer = document.querySelector('.hero__timer');
   const timerBlock = document.querySelector('.timer');
-  timerBlock.dataset.deadline = '2022/02/09 05:52';
+  timerBlock.dataset.timerDeadline = '2022/02/10 11:27';
 
   const getTimeRemaining = () => {
     const currentTime = Date.now();
-    const deadline = new Date(timerBlock.dataset.deadline).getTime() + (180 * 60 * 1000);
+    const deadline = new Date(timerBlock.dataset.timerDeadline).getTime() + (180 * 60 * 1000);
     const timeRemaining = deadline - currentTime;
 
     const days = Math.floor(timeRemaining / 1000 / 60 / 60 / 24);
@@ -21,7 +21,7 @@ export const timer = () => {
     const minutes = Math.floor(timeRemaining / 1000 / 60 % 60);
     const seconds = Math.floor(timeRemaining / 1000 % 60);
 
-    if (days <= 0 && hours <=0 && minutes <= 0) {
+    if (days <= 0 && hours <=0 && minutes <= 0 && seconds <= 0) {
       return 0;
     } else {
       return {days, hours, minutes, seconds};
@@ -75,11 +75,6 @@ export const timer = () => {
     const timer = getTimeRemaining();
     const units = getUnits();
 
-    //  Если наступил дедлайн, то удаляем таймер со страницы
-    if (!timer) {
-      heroText.remove();
-      heroTimer.remove();
-    }
     //  Если до дедлайна меньше 24 суток, то меняет таймер, заменяя дни на часа и добавляя секунды. Если значения меньше 10, то добавляем перед ними 0
     if (!timer.days) {
       timer.hours >= 10 ? timerDays.textContent = timer.hours : timerDays.textContent = `0${timer.hours}`;
@@ -99,6 +94,14 @@ export const timer = () => {
     
 
     const intervalId = setTimeout(start, 1000);
+
+    //  Если наступил дедлайн, то удаляем таймер со страницы
+    if (!timer) {
+      heroText.remove();
+      heroTimer.remove();
+      clearTimeout(intervalId);
+    }
+
   }
 
   start();
