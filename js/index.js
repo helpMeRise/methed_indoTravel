@@ -6,6 +6,7 @@ import './modules/fly.js';
 import './modules/selectsData.js';
 import './modules/sendForms.js';
 import './modules/modal.js';
+import './modules/validate.js';
 
 
 timerElements();

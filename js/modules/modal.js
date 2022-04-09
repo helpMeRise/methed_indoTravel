@@ -3,6 +3,7 @@ import fetchRequest from './sendForms.js';
 
 const reservationForm = document.querySelector('.reservation__form');
 const reservationPrice = document.querySelector('.reservation__price');
+const reservationName = document.querySelector('.reservation__input_name');
 
 const modal = async (err, data) => {
   await loadStyle('css/modal.css');
@@ -78,7 +79,11 @@ reservationForm.addEventListener('submit', e => {
   const formData = new FormData(reservationForm);
   const reservation = Object.fromEntries(formData);
 
-  modal(null, reservation);
+  if (/[А-ЯЁа-яё]+\s[А-ЯЁа-яё]+\s[А-ЯЁа-яё]+/.test(reservationName.value)) {
+    console.log(reservationName.value);
+
+    modal(null, reservation);
+  }
 });
 
 
